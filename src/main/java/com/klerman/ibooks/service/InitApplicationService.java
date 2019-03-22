@@ -65,15 +65,15 @@ public class InitApplicationService {
 		 
 		 // Book
 		 bookService.save(new Book("Testing Java Microservices", category1, author1));
-		 bookService.save(new Book("Algorithms Illuminated", category1, author2));
-		 bookService.save(new Book("Super Mario: How Nintendo Conquered America", category1, author3));
-		 bookService.save(new Book("Python Crash Course", category1, author4));
-		 bookService.save(new Book("Javascript for Babies", category1, author5));
-		 bookService.save(new Book("Spring Boot and Single-Page Applications", category1, author6));
-		 bookService.save(new Book("Head First Servlets and JSP", category1, author7));
-		 bookService.save(new Book("Web Development with Java", category1, author8));
-		 bookService.save(new Book("Automate the Boring Stuff with Python", category1, author9));
-		 bookService.save(new Book("The Ultimate Roblox Book", category2, author10));
+		 bookService.save(new Book("Algorithms Illuminated", category1, author1));
+		 bookService.save(new Book("Super Mario: How Nintendo Conquered America", category1, author1));
+		 bookService.save(new Book("Python Crash Course", category1, author1));
+		 bookService.save(new Book("Javascript for Babies", category1, author1));
+		 bookService.save(new Book("Spring Boot and Single-Page Applications", category1, author1));
+		 bookService.save(new Book("Head First Servlets and JSP", category1, author1));
+		 bookService.save(new Book("Web Development with Java", category1, author1));
+		 bookService.save(new Book("Automate the Boring Stuff with Python", category1, author1));
+		 bookService.save(new Book("The Ultimate Roblox Book", category2, author1));
 		 
 
 	     LOGGER.info("Initialization completed");
