@@ -1,5 +1,8 @@
 package com.klerman.ibooks.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +20,15 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public Page<Category> findAll(Pageable pageable) {
 		return categoryRepository.findAll(pageable);
+	}
+	
+	@Override
+	public List<Category> findAll() {
+		List<Category> list = new ArrayList<>();
+		categoryRepository.findAll().forEach(category -> {
+			list.add(category);
+		});
+		return list;
 	}
 
 	@Override

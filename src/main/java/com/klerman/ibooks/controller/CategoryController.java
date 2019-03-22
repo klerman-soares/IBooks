@@ -45,9 +45,12 @@ public class CategoryController {
 	}
 	
 	@RequestMapping(value="/delete/{id}", method = RequestMethod.GET)
-	public String categoryDelete(Model model, @PathVariable(required = true, name = "id") Long id) {
+	public String categoryDelete(Model model, @PathVariable(required = true, name = "id") Long id, Pageable pageable) {
 		categoryService.deleteCategory(id);
-		//model.addAttribute("categories", categoryService.findAll());
+		
+		PageWrapper<Category> page = new PageWrapper<Category> (categoryService.findAll(pageable), "/category/list");
+		model.addAttribute("page", page);
+		
 		return "category-list";
 	}
 	
