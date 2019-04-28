@@ -7,13 +7,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 
-public class LandonUserPrincipal implements UserDetails{
+public class UserPrincipal implements UserDetails{
 
 	private static final long serialVersionUID = 1L;
 	
 	private User user;
 
-    public LandonUserPrincipal(User user){
+    public UserPrincipal(User user){
         super();
         this.user = user;
     }

@@ -20,7 +20,7 @@ public class UserServiceImpl  implements UserService {
         if(null==user){
             throw new UsernameNotFoundException("cannot find username: " + username);
         }
-        return new LandonUserPrincipal(user);
+        return new UserPrincipal(user);
     }
     
     @Override
