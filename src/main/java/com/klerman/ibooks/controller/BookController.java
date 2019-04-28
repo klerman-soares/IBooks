@@ -12,6 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -49,6 +50,7 @@ public class BookController {
 	AuthorService authorService;
 	
 	@RequestMapping (value= {"/", "/list"})
+	@PreAuthorize("hasRole('ROLE_USER')")
 	public String bookList(Model model, Pageable pageable) {
 		PageWrapper<Book> page = new PageWrapper<Book> (bookService.findAll(pageable), "/book/list");
 		model.addAttribute("page", page);		

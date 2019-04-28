@@ -7,10 +7,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.klerman.ibooks.auth.AuthGroup;
+import com.klerman.ibooks.auth.AuthGroupRepository;
 import com.klerman.ibooks.auth.User;
 import com.klerman.ibooks.auth.UserService;
 import com.klerman.ibooks.data.entity.Author;
@@ -32,10 +33,13 @@ public class InitApplicationService {
 	 BookService bookService;
 	 
 	 @Autowired
-	 UserService landonUserDetailsService;
+	 UserService userDetailsService;
 	 
 	 @Autowired
 	 private PasswordEncoder passwordEncoder;
+	 
+	 @Autowired
+	 AuthGroupRepository authGroupRepository;
 
 	 @EventListener(ApplicationReadyEvent.class)
 	 public void initializeTestData() {
@@ -94,11 +98,15 @@ public class InitApplicationService {
 		 bookService.save(new Book("Automate the Boring Stuff with Python", category1, author9, dateNow));
 		 bookService.save(new Book("The Ultimate Roblox Book", category2, author10, dateNow));
 		 
-		 landonUserDetailsService.save(new User("klerman", passwordEncoder.encode("1234")));
-		 UserDetails userDetails = landonUserDetailsService.loadUserByUsername("klerman");
-		 String pa = userDetails.getPassword();
-		 LOGGER.info("Password: " + pa);
-		 
+		 String username = "klerman";
+		 userDetailsService.save(new User(username, passwordEncoder.encode("1234")));
+		 userDetailsService.save(new User("adela", passwordEncoder.encode("123")));
+		 userDetailsService.save(new User("izabella", passwordEncoder.encode("12345")));
+
+		 authGroupRepository.save(new AuthGroup("klerman", "USER"));
+		 authGroupRepository.save(new AuthGroup("adela", "ADMIN"));
+		 authGroupRepository.save(new AuthGroup("izabella", "ADMIN"));
+		 authGroupRepository.save(new AuthGroup("izabella", "USER"));
 
 	     LOGGER.info("Initialization completed");
 	 }

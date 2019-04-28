@@ -8,28 +8,28 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="USER")
-public class User {
+@Table(name="AUTH_USER_GROUP")
+public class AuthGroup {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
-    @Column(name="USER_ID")
+    @Column(name="AUTH_USER_GROUP_ID")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @Column(name="USERNAME", nullable = false, unique = true)
+    
+    @Column(name="USERNAME")
     private String username;
-    @Column(name="PASSWORD")
-    private String password;
-
-	public User() {
-		super();
-	}
-
-	public User(String username, String password) {
+    
+    public AuthGroup() { }
+    
+    public AuthGroup(String username, String authGroup) {
 		super();
 		this.username = username;
-		this.password = password;
+		this.authGroup = authGroup;
 	}
 
-	public long getId() {
+	@Column(name="AUTH_GROUP")
+    private String authGroup;
+
+    public long getId() {
         return id;
     }
 
@@ -45,11 +45,11 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getAuthGroup() {
+        return authGroup;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAuthGroup(String authGroup) {
+        this.authGroup = authGroup;
     }
 }

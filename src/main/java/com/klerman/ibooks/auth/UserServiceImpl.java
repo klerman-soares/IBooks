@@ -1,5 +1,7 @@
 package com.klerman.ibooks.auth;
 
+import java.util.List;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -8,10 +10,12 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl  implements UserService {
 
     private final UserRepository userRepository;
+    private final AuthGroupRepository authGroupRepository;
 
-    public UserServiceImpl(UserRepository userRepository){
+    public UserServiceImpl(UserRepository userRepository, AuthGroupRepository authGroupRepository){
         super();
         this.userRepository = userRepository;
+        this.authGroupRepository = authGroupRepository;
     }
 
     @Override
@@ -20,7 +24,8 @@ public class UserServiceImpl  implements UserService {
         if(null==user){
             throw new UsernameNotFoundException("cannot find username: " + username);
         }
-        return new UserPrincipal(user);
+        List<AuthGroup> authGroups = this.authGroupRepository.findByUsername(username);
+        return new UserPrincipal(user, authGroups);
     }
     
     @Override
