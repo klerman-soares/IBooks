@@ -1,9 +1,9 @@
 package com.klerman.ibooks.data.entity;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Book {
@@ -23,10 +25,11 @@ public class Book {
 		this.name = name;
 	}
 	
-	public Book (String name, Category category, Author author) {
+	public Book (String name, Category category, Author author, LocalDate publicationDate) {
 		this.name = name;
 		this.category = category;
 		this.authorList.add(author);
+		this.publicationDate = publicationDate;
 	}
 	
 	public Book (String name, Category category, Set<Author> authorList) {
@@ -41,6 +44,7 @@ public class Book {
 	private long id;
 	
 	@Column
+	@NotBlank (message = "This field Name must no be empty")
 	private String name;
 	
 	@ManyToOne
@@ -52,6 +56,10 @@ public class Book {
     joinColumns = { @JoinColumn(name = "fk_book") },
     inverseJoinColumns = { @JoinColumn(name = "fk_author") })
 	private Set<Author> authorList = new HashSet<Author>();
+	
+	@Column
+	@NotNull (message = "This Publication Date must no be empty")
+	private LocalDate publicationDate;
 	
 	public long getId() {
 		return id;
@@ -79,6 +87,14 @@ public class Book {
 
 	public Set<Author> getAuthorList() {
 		return authorList;
+	}
+
+	public LocalDate getPublicationDate() {
+		return publicationDate;
+	}
+
+	public void setPublicationDate(LocalDate publicationDate) {
+		this.publicationDate = publicationDate;
 	}
 
 	@Override

@@ -1,12 +1,18 @@
 package com.klerman.ibooks.service;
 
+import java.time.LocalDate;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.klerman.ibooks.auth.User;
+import com.klerman.ibooks.auth.UserService;
 import com.klerman.ibooks.data.entity.Author;
 import com.klerman.ibooks.data.entity.Book;
 import com.klerman.ibooks.data.entity.Category;
@@ -24,6 +30,12 @@ public class InitApplicationService {
 	 
 	 @Autowired
 	 BookService bookService;
+	 
+	 @Autowired
+	 UserService landonUserDetailsService;
+	 
+	 @Autowired
+	 private PasswordEncoder passwordEncoder;
 
 	 @EventListener(ApplicationReadyEvent.class)
 	 public void initializeTestData() {
@@ -57,23 +69,35 @@ public class InitApplicationService {
 		 Author author8 = authorService.saveAuthor(new Author("Nora Roberts"));
 		 Author author9 = authorService.saveAuthor(new Author("Minka Kent"));
 		 Author author10 = authorService.saveAuthor(new Author("Bella Forrest"));
-		 authorService.saveAuthor(new Author("Margaret Atwood"));
-		 authorService.saveAuthor(new Author("Bill Clinton"));
-		 authorService.saveAuthor(new Author("Joseph Reid"));
-		 authorService.saveAuthor(new Author("Kerry Lonsdale"));
-		 authorService.saveAuthor(new Author("Melinda Leigh"));
+		 authorService.saveAuthor(author1);
+		 authorService.saveAuthor(author2);
+		 authorService.saveAuthor(author3);
+		 authorService.saveAuthor(author4);
+		 authorService.saveAuthor(author5);
+		 authorService.saveAuthor(author6);
+		 authorService.saveAuthor(author7);
+		 authorService.saveAuthor(author8);
+		 authorService.saveAuthor(author9);
+		 authorService.saveAuthor(author10);
+		 
+		 LocalDate dateNow = LocalDate.of(2019, 02, 20);
 		 
 		 // Book
-		 bookService.save(new Book("Testing Java Microservices", category1, author1));
-		 bookService.save(new Book("Algorithms Illuminated", category1, author1));
-		 bookService.save(new Book("Super Mario: How Nintendo Conquered America", category1, author1));
-		 bookService.save(new Book("Python Crash Course", category1, author1));
-		 bookService.save(new Book("Javascript for Babies", category1, author1));
-		 bookService.save(new Book("Spring Boot and Single-Page Applications", category1, author1));
-		 bookService.save(new Book("Head First Servlets and JSP", category1, author1));
-		 bookService.save(new Book("Web Development with Java", category1, author1));
-		 bookService.save(new Book("Automate the Boring Stuff with Python", category1, author1));
-		 bookService.save(new Book("The Ultimate Roblox Book", category2, author1));
+		 bookService.save(new Book("Testing Java Microservices", category1, author1, dateNow));
+		 bookService.save(new Book("Algorithms Illuminated", category1, author2, dateNow));
+		 bookService.save(new Book("Super Mario: How Nintendo Conquered America", category1, author3, dateNow));
+		 bookService.save(new Book("Python Crash Course", category1, author4, dateNow));
+		 bookService.save(new Book("Javascript for Babies", category1, author5, dateNow));
+		 bookService.save(new Book("Spring Boot and Single-Page Applications", category1, author6, dateNow));
+		 bookService.save(new Book("Head First Servlets and JSP", category1, author7, dateNow));
+		 bookService.save(new Book("Web Development with Java", category1, author8, dateNow));
+		 bookService.save(new Book("Automate the Boring Stuff with Python", category1, author9, dateNow));
+		 bookService.save(new Book("The Ultimate Roblox Book", category2, author10, dateNow));
+		 
+		 landonUserDetailsService.save(new User("klerman", passwordEncoder.encode("1234")));
+		 UserDetails userDetails = landonUserDetailsService.loadUserByUsername("klerman");
+		 String pa = userDetails.getPassword();
+		 LOGGER.info("Password: " + pa);
 		 
 
 	     LOGGER.info("Initialization completed");

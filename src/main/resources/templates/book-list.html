@@ -32,7 +32,8 @@
 						<th>Name</th>
 						<th>Category</th>
 						<th>Author</th>
-						<td>&nbsp;</td>
+						<th>Publication</th>
+						<td style="width:100px;">&nbsp;</td>
 					</tr>
 				</thead>
 					<tr th:each="book: ${page.content}">
@@ -45,7 +46,8 @@
 									<span th:text="${author.name}"></span>
 								</li>
 							</ul>							
-						</td>						
+						</td>
+						<td th:text="${#temporals.format(book.publicationDate,'dd/MM/yyyy')}">Publication</td>						
 						<td>
                         	<a href="/bookEdit/1" th:href="@{/book/edit/__${book.id}__}" class="btn btn-link btn-sm">
                         		<span class="fa fa-edit" aria-hidden="true">&nbsp;</span>

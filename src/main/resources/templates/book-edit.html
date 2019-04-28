@@ -20,6 +20,7 @@
 		            <div class="form-group">
 		                <label for="title">Name</label>
 		                <input type="text" class="form-control" id="name" th:field="${book.name}" />
+		                <p class="error" th:if="${#fields.hasErrors('book.name')}" th:errors="*{book.name}">Incorrect data</p>
 		            </div>
 		            
 		             <div class="form-group">
@@ -40,6 +41,12 @@
 	                            th:value="${author.id}"
 	                            th:utext="${author.name}"/>
 	                  	</select>
+		            </div>
+		            
+		            <div class="form-group">
+		                <label for="publication-date">Publication Date</label>
+		                <input type="text" class="form-control" id="publication-date" th:field="${book.publicationDate}" />
+		                <p class="error" th:if="${#fields.hasErrors('book.publicationDate')}" th:errors="*{book.publicationDate}">Incorrect data</p>
 		            </div>
 
 		            <button type="submit" class="btn btn-primary">Save</button>
