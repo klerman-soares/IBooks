@@ -11,10 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import com.klerman.ibooks.auth.UserServiceImpl;
 
 @Configuration
 @EnableWebSecurity
@@ -22,7 +21,7 @@ import com.klerman.ibooks.auth.UserServiceImpl;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
-    private UserServiceImpl userDetailsService;
+    private UserDetailsService userDetailsService;
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {

@@ -33,7 +33,7 @@ public class InitApplicationService {
 	 BookService bookService;
 	 
 	 @Autowired
-	 UserService userDetailsService;
+	 UserService userService;
 	 
 	 @Autowired
 	 private PasswordEncoder passwordEncoder;
@@ -99,9 +99,9 @@ public class InitApplicationService {
 		 bookService.save(new Book("The Ultimate Roblox Book", category2, author10, dateNow));
 		 
 		 String username = "klerman";
-		 userDetailsService.save(new User(username, passwordEncoder.encode("1234")));
-		 userDetailsService.save(new User("adela", passwordEncoder.encode("123")));
-		 userDetailsService.save(new User("izabella", passwordEncoder.encode("12345")));
+		 userService.save(new User(username, passwordEncoder.encode("1234")));
+		 userService.save(new User("adela", passwordEncoder.encode("123")));
+		 userService.save(new User("izabella", passwordEncoder.encode("12345")));
 
 		 authGroupRepository.save(new AuthGroup("klerman", "USER"));
 		 authGroupRepository.save(new AuthGroup("adela", "ADMIN"));
