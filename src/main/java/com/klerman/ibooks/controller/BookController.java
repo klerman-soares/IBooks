@@ -50,7 +50,7 @@ public class BookController {
 	AuthorService authorService;
 	
 	@RequestMapping (value= {"/", "/list"})
-	@PreAuthorize("hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 	public String bookList(Model model, Pageable pageable) {
 		PageWrapper<Book> page = new PageWrapper<Book> (bookService.findAll(pageable), "/book/list");
 		model.addAttribute("page", page);		

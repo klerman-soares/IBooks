@@ -100,8 +100,8 @@ public class InitApplicationService {
 		 
 		 String username = "klerman";
 		 userService.save(new User(username, passwordEncoder.encode("1234")));
-		 userService.save(new User("adela", passwordEncoder.encode("123")));
-		 userService.save(new User("izabella", passwordEncoder.encode("12345")));
+		 userService.save(new User("adela", passwordEncoder.encode("1234")));
+		 userService.save(new User("izabella", passwordEncoder.encode("1234")));
 
 		 authGroupRepository.save(new AuthGroup("klerman", "USER"));
 		 authGroupRepository.save(new AuthGroup("adela", "ADMIN"));

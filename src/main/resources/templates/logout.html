@@ -8,14 +8,11 @@
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 </head>
 <body>
-	<div class="container">
-	    <form th:action="@{/login}" method="post">
-	        <div>
-	            <label>User Name: <input id="fldUsername" type="text" name="username"/></label>
-	            <label>Password: <input id="fldPassword" type="password" name="password"/></label>
-	        </div>
-	        <div><input type="submit" value="Login"/></div>
-	    </form>
-	</div>
+	<div class="container main-content">
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-info"><h3>You have been successfully logged out.</h3></li>
+        </ul>
+        <a th:href="@{/index}">Return home</a>
+    </div>
 </body>
 </html>
