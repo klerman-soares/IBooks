@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import com.klerman.ibooks.data.entity.Book;
 import com.klerman.ibooks.data.entity.Category;
 
 @Service
+@Profile(value = {"dev"})
 public class InitApplicationService {
 	
 	 private static final Logger LOGGER = LoggerFactory.getLogger(InitApplicationService.class);
@@ -98,15 +100,17 @@ public class InitApplicationService {
 		 bookService.save(new Book("Automate the Boring Stuff with Python", category1, author9, dateNow));
 		 bookService.save(new Book("The Ultimate Roblox Book", category2, author10, dateNow));
 		 
-		 String username = "klerman";
-		 userService.save(new User(username, passwordEncoder.encode("1234")));
-		 userService.save(new User("adela", passwordEncoder.encode("1234")));
-		 userService.save(new User("izabella", passwordEncoder.encode("1234")));
+		 String user = "user";
+		 String admin = "admin";
+		 String book_admin = "book";
+		 userService.save(new User(user, passwordEncoder.encode("1234")));
+		 userService.save(new User(admin, passwordEncoder.encode("1234")));
+		 userService.save(new User(book_admin, passwordEncoder.encode("1234")));
 
-		 authGroupRepository.save(new AuthGroup("klerman", "USER"));
-		 authGroupRepository.save(new AuthGroup("adela", "ADMIN"));
-		 authGroupRepository.save(new AuthGroup("izabella", "ADMIN"));
-		 authGroupRepository.save(new AuthGroup("izabella", "USER"));
+		 authGroupRepository.save(new AuthGroup(user, "USER"));
+		 authGroupRepository.save(new AuthGroup(book_admin, "ADMIN_BOOK"));
+		 authGroupRepository.save(new AuthGroup(admin, "ADMIN"));
+		 authGroupRepository.save(new AuthGroup(admin, "ADMIN_BOOK"));
 
 	     LOGGER.info("Initialization completed");
 	 }

@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Category {
@@ -21,6 +22,7 @@ public class Category {
 	private Long id;
 	
 	@Column
+	@NotBlank (message = "The field Name must not be empty")
 	private String name;
 	
 	@OneToMany(mappedBy="category", fetch= FetchType.LAZY, cascade = CascadeType.REMOVE)

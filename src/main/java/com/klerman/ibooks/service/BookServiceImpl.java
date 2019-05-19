@@ -6,28 +6,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.klerman.ibooks.data.entity.Book;
-import com.klerman.ibooks.data.repository.AuthorRepository;
 import com.klerman.ibooks.data.repository.BookRepository;
-import com.klerman.ibooks.data.repository.CategoryRepository;
 
 
 @Service
 public class BookServiceImpl implements BookService{
 	
 	private BookRepository bookRepository;
-	private CategoryRepository categoryRepository;
-	private AuthorRepository authorRepository;
 	
 	@Autowired
-	public BookServiceImpl(BookRepository bookRepository, CategoryRepository categoryRepository, AuthorRepository authorRepository) {
+	public BookServiceImpl(BookRepository bookRepository) {
 		this.bookRepository = bookRepository;
-		this.categoryRepository = categoryRepository;
-		this.authorRepository = authorRepository;
-	}
-	
-	public Book addBook (Book book) {
-		Book newBook = bookRepository.save(book);
-		return newBook;
 	}
 
 	@Override
@@ -49,5 +38,4 @@ public class BookServiceImpl implements BookService{
 	public void deleteBook(Long id) {		
 		bookRepository.deleteById(id);				
 	}
-
 }

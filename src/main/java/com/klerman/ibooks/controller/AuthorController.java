@@ -3,10 +3,14 @@ package com.klerman.ibooks.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.klerman.ibooks.data.entity.Author;
 import com.klerman.ibooks.service.AuthorService;
@@ -21,7 +25,12 @@ public class AuthorController {
 	
 	@RequestMapping (value= {"/", "/list"})
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public String categoryList(Model model, Pageable pageable) {
+	public String categoryList(
+			Model model, 
+			@PageableDefault(
+					size=PageWrapper.MAX_PAGE_ITEM_DISPLAY, 
+					sort={"id"}, 
+					direction=Direction.DESC) Pageable pageable) {
 		PageWrapper<Author> page = new PageWrapper<Author> (authorService.findAll(pageable), "/author/list");
 		model.addAttribute("page", page);		
 		
@@ -31,5 +40,4 @@ public class AuthorController {
 		model.addAttribute("authorList", pages.getContent());
 		return "author-list";
 	}
-
 }

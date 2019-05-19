@@ -12,6 +12,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,8 +52,13 @@ public class BookController {
 	AuthorService authorService;
 	
 	@RequestMapping (value= {"/", "/list"})
-	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-	public String bookList(Model model, Pageable pageable) {
+	@PreAuthorize("hasRole('ROLE_ADMIN_BOOK') or hasRole('ROLE_ADMIN')")
+	public String bookList(
+			Model model, 
+			@PageableDefault(
+					size=PageWrapper.MAX_PAGE_ITEM_DISPLAY, 
+					sort={"id"}, 
+					direction=Direction.DESC) Pageable pageable) {
 		PageWrapper<Book> page = new PageWrapper<Book> (bookService.findAll(pageable), "/book/list");
 		model.addAttribute("page", page);		
 
@@ -78,15 +85,14 @@ public class BookController {
 	@RequestMapping (value="/edit", method = RequestMethod.POST)
 	public String bookSave(Model model, 
 			@Valid @ModelAttribute("book") Book book,
-			BindingResult bindingResult, SessionStatus sessionStatus, 
+			BindingResult bindingResult, 
+			SessionStatus sessionStatus, 
 			Pageable pageable) {
 		if (bindingResult.hasErrors()) {			
 			return "book-edit";
 		} else {		
 			bookService.save(book);
-			
-			PageWrapper<Book> page = new PageWrapper<Book> (bookService.findAll(pageable), "/book/list");
-			model.addAttribute("page", page);
+
 			sessionStatus.setComplete();
 			return "redirect:/book/list";
 		}

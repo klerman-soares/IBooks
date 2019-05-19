@@ -14,6 +14,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -21,13 +22,10 @@ public class Book {
 	
 	public Book() {	}
 	
-	public Book(String name) {
-		this.name = name;
-	}
-	
 	public Book (String name, Category category, Author author, LocalDate publicationDate) {
 		this.name = name;
 		this.category = category;
+		this.authorList = new HashSet<Author>();
 		this.authorList.add(author);
 		this.publicationDate = publicationDate;
 	}
@@ -44,18 +42,20 @@ public class Book {
 	private long id;
 	
 	@Column
-	@NotBlank (message = "This field Name must no be empty")
+	@NotBlank (message = "The field Name must not be empty")
 	private String name;
 	
 	@ManyToOne
 	@JoinColumn(name = "cat_id", nullable=false)
+	@NotNull
 	private Category  category;
 	
 	@ManyToMany
 	@JoinTable(name = "book_author",
     joinColumns = { @JoinColumn(name = "fk_book") },
     inverseJoinColumns = { @JoinColumn(name = "fk_author") })
-	private Set<Author> authorList = new HashSet<Author>();
+	@NotEmpty (message = "The book must have at least one author")
+	private Set<Author> authorList;
 	
 	@Column
 	@NotNull (message = "This Publication Date must no be empty")
@@ -130,6 +130,6 @@ public class Book {
 	}
 
 	public String toString() {
-		return "Book{ id=" + id + ", name=" +this.name + ", category=" + category + ", writers=" + authorList + "}";
+		return "Book{ id=" + id + ", name=" +this.name + ", category=" + category + ", authors=" + authorList + "}";
 	}
 }

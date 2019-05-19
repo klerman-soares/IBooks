@@ -18,32 +18,16 @@
 				
 				<h2 th:text="#{author.manager}"></h2>
 				
-				<p>
-		            <a href="/category/edit" th:href="@{/category/edit/}" class="btn btn-primary btn-sm" role="button">
-		            	<span class="fa fa-file" aria-hidden="true">&nbsp;</span>
-		            	New Book
-		            </a>
-		        </p>
-				
 				<table class="table table-striped table-bordered">
 				<thead>
 					<tr>
 						<th>Id</th>
 						<th>Name</th>
-						<td>&nbsp;</td>
 					</tr>
 				</thead>
 					<tr th:each="author: ${page.content}">
 						<td th:text="${author.id}">Id</td>
-						<td th:text="${author.name}">Name</td>						
-						<td>
-                        	<a href="/authorEdit/1" th:href="@{/author/edit/__${author.id}__}" class="btn btn-link btn-sm">
-                        		<span class="fa fa-edit" aria-hidden="true">&nbsp;</span>
-                        	</a>
-                        	<a href="/authorDelete/1" th:href="@{/author/delete/__${author.id}__}" class="btn btn-link btn-sm">
-                        		<span class="fa fa-remove" aria-hidden="true"></span>
-                        	</a>
-                    	</td>
+						<td th:text="${author.name}">Name</td>
 					</tr>
 				</table>
 				

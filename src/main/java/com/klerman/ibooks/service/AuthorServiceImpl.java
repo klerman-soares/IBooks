@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.klerman.ibooks.data.entity.Author;
-import com.klerman.ibooks.data.entity.Book;
 import com.klerman.ibooks.data.repository.AuthorRepository;
 
 @Service
