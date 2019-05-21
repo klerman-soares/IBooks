@@ -18,7 +18,27 @@
 			</div>
 			<div class="col-md-10">			
 				
-				<h2>Welcome</h2>
+				<h3>Welcome</h3>
+				
+				<p>This is a bookstore web sample application using Spring Boot, Spring Secure, Spring Data, Thymeleaf, H2 Database and Bootstrap.</p>
+
+				<p>It's excellent for learning purposes, showing how these technologies fit together.</p>
+
+				<h5>Functionalities:</h5>
+				<h6>Domain objets</h6>
+				<p> - Books, Category and Author. All with the normal CRUD operations.<p>
+				
+				<p> - Books can belong to many categories and be written by many authors.<p>
+				
+				<h6>Spring Security</h6>
+				<p> - It uses forms-based authentication with custom login and logout.<p>
+				
+				<p> - There are three roles defined: user, admin, admin_book:<p>
+				<ul>
+					<li>Admin can manage categories, books, and authors.</li>
+					<li>Admin_book can manage only books.</li>
+					<li>User can access features outside the administration area (not implemented yet).</li>
+				</ul>
 			</div>
 		</div>
 		<div th:replace="fragments/footer :: #footer"></div>

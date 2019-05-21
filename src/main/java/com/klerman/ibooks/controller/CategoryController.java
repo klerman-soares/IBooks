@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.klerman.ibooks.data.entity.Category;
 import com.klerman.ibooks.service.CategoryService;
@@ -57,7 +58,8 @@ public class CategoryController {
 	public String categorySave(
 			Model model, 
 			@Valid Category category,
-			BindingResult bindingResult) {
+			BindingResult bindingResult,
+			RedirectAttributes redirectAttributes) {
 		if (bindingResult.hasErrors()) {			
 			return VIEWS_EDIT_FORM;
 		} else {
@@ -67,7 +69,10 @@ public class CategoryController {
 	}
 	
 	@RequestMapping(value="/delete/{id}", method = RequestMethod.GET)
-	public String categoryDelete(Model model, @PathVariable(required = true, name = "id") Long id, Pageable pageable) {
+	public String categoryDelete(
+			Model model, 
+			@PathVariable(required = true, name = "id") Long id, 
+			RedirectAttributes redirectAttributes) {
 		categoryService.deleteCategory(id);		
 		return "redirect:/category/list";
 	}

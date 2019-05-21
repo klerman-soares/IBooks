@@ -17,6 +17,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.klerman.ibooks.data.entity.Author;
 import com.klerman.ibooks.data.entity.Book;
@@ -58,10 +60,11 @@ public class BookController {
 			@PageableDefault(
 					size=PageWrapper.MAX_PAGE_ITEM_DISPLAY, 
 					sort={"id"}, 
-					direction=Direction.DESC) Pageable pageable) {
+					direction=Direction.DESC
+			) Pageable pageable) {
 		PageWrapper<Book> page = new PageWrapper<Book> (bookService.findAll(pageable), "/book/list");
 		model.addAttribute("page", page);		
-
+		
 		return "book-list";
 	}
 	
@@ -83,25 +86,28 @@ public class BookController {
 	}
 	
 	@RequestMapping (value="/edit", method = RequestMethod.POST)
-	public String bookSave(Model model, 
+	public String bookSave(ModelMap model, 
 			@Valid @ModelAttribute("book") Book book,
 			BindingResult bindingResult, 
-			SessionStatus sessionStatus, 
-			Pageable pageable) {
+			SessionStatus sessionStatus,
+			RedirectAttributes redirectAttributes) {
 		if (bindingResult.hasErrors()) {			
 			return "book-edit";
 		} else {		
 			bookService.save(book);
-
+			redirectAttributes.addFlashAttribute("msgSaveSuccess", "The book was successfully saved");
 			sessionStatus.setComplete();
 			return "redirect:/book/list";
 		}
 	}
 	
 	@RequestMapping(value="/delete/{id}", method = RequestMethod.GET)
-	public String bookDelete(Model model, @PathVariable(required = true, name = "id") Long id, Pageable pageable) {
+	public String bookDelete(
+			Model model, 
+			@PathVariable(required = true, name = "id") Long id, 
+			RedirectAttributes redirectAttributes) {
 		bookService.deleteBook(id);
-		
+		redirectAttributes.addFlashAttribute("msgSaveSuccess", "The book was successfully deleted");
 		return "redirect:/book/list";
 	}
 	
