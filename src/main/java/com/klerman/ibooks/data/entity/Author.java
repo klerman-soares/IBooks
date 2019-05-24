@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Author {
@@ -17,7 +18,8 @@ public class Author {
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long id;	
 	
-	@Column (nullable = false)
+	@Column
+	@NotBlank (message = "The field Name must not be empty")
 	private String name;
 	
 	@ManyToMany (mappedBy="authorList")

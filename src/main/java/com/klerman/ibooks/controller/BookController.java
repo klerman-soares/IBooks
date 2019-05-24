@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
@@ -44,6 +45,16 @@ public class BookController {
 	
 	private static Logger logger = LogManager.getLogger(BookController.class);
 	
+	public static final String VIEW_EDIT_FORM = "book-edit";
+	public static final String VIEW_LIST = "book-list";
+	public static final String REDIRECT_VIEW_LIST = "redirect:/book/list";
+	
+	@Value("${msg.book.save.success}") 
+	String msgSaveSuccess;
+	
+	@Value("${msg.book.delete.success}") 
+	String msgDeleteSuccess;
+	
 	@Autowired
 	BookService bookService;
 	
@@ -65,7 +76,7 @@ public class BookController {
 		PageWrapper<Book> page = new PageWrapper<Book> (bookService.findAll(pageable), "/book/list");
 		model.addAttribute("page", page);		
 		
-		return "book-list";
+		return VIEW_LIST;
 	}
 	
 	@RequestMapping (value= {"/edit", "/edit/{id}"}, method = RequestMethod.GET)
@@ -82,7 +93,7 @@ public class BookController {
 		List<Author> authors = authorService.findAll();
 		model.addAttribute("authors", authors);
 		
-		return "book-edit";
+		return VIEW_EDIT_FORM;
 	}
 	
 	@RequestMapping (value="/edit", method = RequestMethod.POST)
@@ -92,12 +103,12 @@ public class BookController {
 			SessionStatus sessionStatus,
 			RedirectAttributes redirectAttributes) {
 		if (bindingResult.hasErrors()) {			
-			return "book-edit";
+			return VIEW_EDIT_FORM;
 		} else {		
 			bookService.save(book);
-			redirectAttributes.addFlashAttribute("msgSaveSuccess", "The book was successfully saved");
+			redirectAttributes.addFlashAttribute("msgOperationResult",msgSaveSuccess);
 			sessionStatus.setComplete();
-			return "redirect:/book/list";
+			return REDIRECT_VIEW_LIST;
 		}
 	}
 	
@@ -107,8 +118,8 @@ public class BookController {
 			@PathVariable(required = true, name = "id") Long id, 
 			RedirectAttributes redirectAttributes) {
 		bookService.deleteBook(id);
-		redirectAttributes.addFlashAttribute("msgSaveSuccess", "The book was successfully deleted");
-		return "redirect:/book/list";
+		redirectAttributes.addFlashAttribute("msgOperationResult", msgDeleteSuccess);
+		return REDIRECT_VIEW_LIST;
 	}
 	
 	@InitBinder

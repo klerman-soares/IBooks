@@ -3,7 +3,6 @@ package com.klerman.ibooks.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -45,7 +44,7 @@ public class CategoryControllerIntegrationTest {
 		this.mockMvc.perform(get("/category/"))
 			.andExpect(status().isOk())
 			.andExpect(model().attributeExists("page"))
-        	.andExpect(view().name(CategoryController.VIEWS_LIST));		
+        	.andExpect(view().name(CategoryController.VIEW_LIST));		
 	}
 	
 	@Test
@@ -59,7 +58,7 @@ public class CategoryControllerIntegrationTest {
 			)
 			.andExpect(status().isOk())
 			.andExpect(model().attribute("category", newCategory))
-			.andExpect(view().name(CategoryController.VIEWS_EDIT_FORM));
+			.andExpect(view().name(CategoryController.VIEW_EDIT_FORM));
 	}
 
 	
@@ -69,7 +68,7 @@ public class CategoryControllerIntegrationTest {
 			.perform(get("/category/edit/"))
 			.andExpect(status().isOk())
 			.andExpect(model().attribute("category", new Category()))
-			.andExpect(view().name(CategoryController.VIEWS_EDIT_FORM));
+			.andExpect(view().name(CategoryController.VIEW_EDIT_FORM));
 	}
 	
 	@Test
@@ -81,7 +80,7 @@ public class CategoryControllerIntegrationTest {
 					.param("name", TEST_CATEGORY_NAME)
 				)
 			.andExpect(status().isFound())
-			.andExpect(redirectedUrl("/category/list"));
+			.andExpect(view().name(CategoryController.REDIRECT_VIEW_LIST));
 	}
 	
 	@Test
@@ -94,7 +93,7 @@ public class CategoryControllerIntegrationTest {
 			.andExpect(model().attributeHasErrors("category"))
 			.andExpect(model().attributeHasFieldErrors("category", "name"))
 			.andExpect(status().isOk())
-			.andExpect(view().name(CategoryController.VIEWS_EDIT_FORM));
+			.andExpect(view().name(CategoryController.VIEW_EDIT_FORM));
 	}
 	
 	@Test
@@ -107,16 +106,6 @@ public class CategoryControllerIntegrationTest {
 				get("/category/delete/{id}", newCategory.getId())
 			)
 			.andExpect(status().isFound())
-			.andExpect(redirectedUrl("/category/list"));
-	}
-	
-	@Test
-	public void testCategoryDeleteIdNotFound() throws Exception {		
-		this.mockMvc
-			.perform(
-				get("/category/delete/{id}", 1)
-			)
-			.andExpect(status().isFound())
-			.andExpect(redirectedUrl("/category/list"));
+			.andExpect(view().name(CategoryController.REDIRECT_VIEW_LIST));
 	}
 }

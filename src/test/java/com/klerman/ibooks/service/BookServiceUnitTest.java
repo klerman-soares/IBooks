@@ -43,7 +43,7 @@ public class BookServiceUnitTest {
 	private static final long BOOK_ID = 1L;
 	
 	@Test
-	public void testFindAll () {
+	public void testFindAllBooks () {
 		Book book = new Book();
 		book.setName(BOOK_NAME);
 		
@@ -71,7 +71,7 @@ public class BookServiceUnitTest {
 	}
 	
 	@Test
-	public void testFindOne() {
+	public void testFindBook() {
 		Book book = new Book();
 		book.setName(BOOK_NAME);
 		Optional<Book> mockBook = Optional.of(book);
@@ -81,17 +81,4 @@ public class BookServiceUnitTest {
 		Book newBook = bookService.findOne(BOOK_ID);
 		assertEquals(BOOK_NAME, newBook.getName());
 	}
-	
-	@Test
-	public void testDeleteBook() {
-		Book book = new Book();
-		book.setName(BOOK_NAME);
-		Optional<Book> mockBook = Optional.of(book);
-		
-		when(bookRepository.findById(any(Long.class))).thenReturn(mockBook);
-		
-		Book newBook = bookService.findOne(BOOK_ID);
-		assertEquals(BOOK_NAME, newBook.getName());
-	}
-
 }

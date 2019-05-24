@@ -6,9 +6,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -41,31 +40,25 @@ public class BookRepositoryIntegrationTest {
 	@Autowired
 	private AuthorRepository authorRepository;
 	
-	String bookName = "Java How to Program";
-	String categoryName = "Software Development";	
-	String authorName = "Stephen King";
-	String authorName2 = "Agatha Christie";
+	private static final String BOOK_NAME = "Book Name";
+	String CATEGORY_NAME = "Category Name";
+	String CATEGORY_NAME2 = "Category Name 2";
+	String AUTHOR_NAME = "Author Name";
+	String AUTHOR_NAME2 = "Author Name 2";
 	
-	@Before // setup()
-	public void before() throws Exception {
+	LocalDate dateNow = LocalDate.of(2019, 02, 20);
+	
+	@Before
+	public void setup() throws Exception {
 		// setup data scenario
-		Category aNewCategory = new Category(categoryName);
-		entityManager.persist(aNewCategory);
-		
-		Author newAuthor = new Author(authorName);
-		entityManager.persist(newAuthor);
-		
-		Author newAuthor2 = new Author(authorName2);
+		Category category = new Category(CATEGORY_NAME);
+		entityManager.persist(category);		
+		Author newAuthor = new Author(AUTHOR_NAME);
+		entityManager.persist(newAuthor);		
+		Author newAuthor2 = new Author(AUTHOR_NAME2);
 		entityManager.persist(newAuthor2);
-
-		// setup data scenario
-		Book aNewBook = new Book();
+		Book aNewBook = new Book(BOOK_NAME, category, newAuthor, dateNow);
 		
-		aNewBook.setName(bookName);
-		aNewBook.setCategory(aNewCategory);
-		aNewBook.getAuthorList().add(newAuthor);
-		
-		// save test data
 		entityManager.persist(aNewBook);
 	}
 	
@@ -80,13 +73,10 @@ public class BookRepositoryIntegrationTest {
 	
 	@Test
 	public void testAddBook () {
-		Category bookCategory = categoryRepository.findByName(categoryName);
-		Author bookAuthor = authorRepository.findByName(authorName);
+		Category bookCategory = categoryRepository.findByName(CATEGORY_NAME);
+		Author bookAuthor = authorRepository.findByName(AUTHOR_NAME);
 		
-		Set<Author> authorList = new HashSet<>();
-		authorList.add( bookAuthor);
-		
-		Book aNewBook = new Book(bookName, bookCategory, authorList);
+		Book aNewBook = new Book(BOOK_NAME, bookCategory, bookAuthor, dateNow);
 		
 		Book savedBook = bookRepository.save(aNewBook);
 		assertThat("Saving a new Book", aNewBook, is(equalTo(savedBook)));
@@ -95,44 +85,43 @@ public class BookRepositoryIntegrationTest {
 	@Test
 	public void testUpdateBookName () {
 		String newName = "NewName";
-		Book book = bookRepository.findByName(bookName);
+		Book book = bookRepository.findByName(BOOK_NAME);
 		book.setName(newName);
 		Book savedBook = bookRepository.save(book);
-		assertThat("", newName, is(equalTo(savedBook.getName())));
+		assertThat(newName, is(equalTo(savedBook.getName())));
 	}
 	
 	@Test
 	public void testUpdateBookCategory () {
-		Book book = bookRepository.findByName(bookName);
-		Category newCategory = new Category("NewCategory");
+		Book book = bookRepository.findByName(BOOK_NAME);
+		Category newCategory = new Category(CATEGORY_NAME2);
 		book.setCategory(newCategory);
 		Book savedBook =book = bookRepository.save(book);
-		assertThat("Updating book category", newCategory, is(equalTo(savedBook.getCategory())));
+		assertThat(newCategory, is(equalTo(savedBook.getCategory())));
 	}
 	
 	@Test
 	public void testUpdateAuthorList () {
-		Book book = bookRepository.findByName(bookName);
-		Author author = authorRepository.findByName(authorName2);
+		Book book = bookRepository.findByName(BOOK_NAME);
+		Author author = authorRepository.findByName(AUTHOR_NAME2);
 		book.getAuthorList().add(author);
 		Book savedBook = bookRepository.save(book);	
 		
-		assertTrue("", savedBook.getAuthorList().contains(author));		
+		assertTrue(savedBook.getAuthorList().contains(author));		
 	}
 	
 	@Test
 	public void testDeleteBook() {
-		Book book = bookRepository.findByName(bookName);
+		Book book = bookRepository.findByName(BOOK_NAME);
 		bookRepository.delete(book);
-		Book deletedBook = bookRepository.findByName(bookName);
-		assertNull("This book was sopposed to be deleted", deletedBook);
+		Book deletedBook = bookRepository.findByName(BOOK_NAME);
+		assertNull("This book was supposed to be deleted", deletedBook);
 	}
      
 	
 	@Test
     public void testFindByName() {
-        // Find an inserted record
-        Book foundBook = bookRepository.findByName(bookName);        
-        assertThat(foundBook.getName(), is(equalTo(bookName)));
+        Book foundBook = bookRepository.findByName(BOOK_NAME);        
+        assertThat(foundBook.getName(), is(equalTo(BOOK_NAME)));
     }
 }

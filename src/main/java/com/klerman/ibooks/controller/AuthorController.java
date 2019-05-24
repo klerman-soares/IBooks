@@ -18,6 +18,11 @@ import com.klerman.ibooks.util.PageWrapper;
 @RequestMapping (value="/author")
 public class AuthorController {
 	
+	public static final String VIEW_EDIT_FORM = "author-edit";
+	public static final String VIEW_LIST = "author-list";
+	public static final String REDIRECT_VIEW_LIST = "redirect:/author/list";
+	public static final String VIEW_ERROR = "error";
+	
 	@Autowired
 	AuthorService authorService;
 	
@@ -37,5 +42,9 @@ public class AuthorController {
 		
 		model.addAttribute("authorList", pages.getContent());
 		return "author-list";
+	}
+	
+	public String handleErrors() {
+		return "error";
 	}
 }

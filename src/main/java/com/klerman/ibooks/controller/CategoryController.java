@@ -3,6 +3,7 @@ package com.klerman.ibooks.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
@@ -24,8 +25,16 @@ import com.klerman.ibooks.util.PageWrapper;
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 public class CategoryController {
 	
-	public static final String VIEWS_EDIT_FORM = "category-edit";
-	public static final String VIEWS_LIST = "category-list";
+	public static final String VIEW_EDIT_FORM = "category-edit";
+	public static final String VIEW_LIST = "category-list";
+	public static final String REDIRECT_VIEW_LIST = "redirect:/category/list";
+	public static final String VIEW_ERROR = "error";
+	
+	@Value("${msg.category.save.success}") 
+	String msgSaveSuccess;
+	
+	@Value("${msg.category.delete.success}") 
+	String msgDeleteSuccess;
 	
 	@Autowired
 	CategoryService categoryService;
@@ -41,7 +50,7 @@ public class CategoryController {
 		PageWrapper<Category> page = new PageWrapper<Category> (categoryService.findAll(pageable), "/category/list");
 		model.addAttribute("page", page);		
 
-		return VIEWS_LIST;
+		return VIEW_LIST;
 	}
 	
 	@RequestMapping (value= {"/edit", "/edit/{id}"}, method = RequestMethod.GET)
@@ -51,7 +60,7 @@ public class CategoryController {
         } else {
             model.addAttribute("category", new Category());
         }
-		return VIEWS_EDIT_FORM;
+		return VIEW_EDIT_FORM;
 	}
 	
 	@RequestMapping (value="/edit", method = RequestMethod.POST)
@@ -61,24 +70,26 @@ public class CategoryController {
 			BindingResult bindingResult,
 			RedirectAttributes redirectAttributes) {
 		if (bindingResult.hasErrors()) {			
-			return VIEWS_EDIT_FORM;
+			return VIEW_EDIT_FORM;
 		} else {
 			categoryService.saveCategory(category);
-			return "redirect:/category/list";
+			redirectAttributes.addFlashAttribute("msgOperationResult",msgSaveSuccess);
+			return REDIRECT_VIEW_LIST;
 		}		
 	}
 	
 	@RequestMapping(value="/delete/{id}", method = RequestMethod.GET)
-	public String categoryDelete(
+	public String categoryDelete (
 			Model model, 
 			@PathVariable(required = true, name = "id") Long id, 
 			RedirectAttributes redirectAttributes) {
-		categoryService.deleteCategory(id);		
-		return "redirect:/category/list";
+		categoryService.deleteCategory(id);
+		redirectAttributes.addFlashAttribute("msgOperationResult", msgDeleteSuccess);
+		return REDIRECT_VIEW_LIST;
 	}
 	
 	public String handleErrors() {
-		return "error";
+		return VIEW_ERROR;
 	}
 
 }

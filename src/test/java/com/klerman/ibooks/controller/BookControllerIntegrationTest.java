@@ -35,8 +35,14 @@ import com.klerman.ibooks.service.CategoryService;
 @ActiveProfiles("test")
 public class BookControllerIntegrationTest {
 	
+	public static final String VIEWS_BOOK_EDIT_FORM = "book-edit";
+	public static final String VIEWS_BOOK_LIST = "book-list";
+	
 	private static final long TEST_BOOK_ID = 1L;
 	private static final String TEST_BOOK_NAME = "Book Name";
+	private static final String TEST_CATEGORY_NAME = "Category Name";
+	private static final String TEST_AUTHOR_NAME = "Author Name";
+	private static final String TEST_PUBLICATION_DATE_STR = "20/02/2019";
 	
 	@Autowired
 	BookController bookController;
@@ -59,16 +65,17 @@ public class BookControllerIntegrationTest {
 	
 	@Before
 	public void setup() {
-		category = categoryService.saveCategory(new Category("Computers & Technology"));
-		author = authorService.saveAuthor(new Author("James Patterson"));
+		category = categoryService.saveCategory(new Category(TEST_CATEGORY_NAME));
+		author = authorService.saveAuthor(new Author(TEST_AUTHOR_NAME));
 		dateNow = LocalDate.of(2019, 02, 20);
 	}
 		
 	@Test
 	public void testBookList() throws Exception {
 		this.mockMvc.perform(get("/book/"))
+			.andExpect(model().attributeExists("page"))
 			.andExpect(status().isOk())
-        	.andExpect(view().name("book-list"));		
+        	.andExpect(view().name(VIEWS_BOOK_LIST));		
 	}
 	
 	@Test
@@ -82,7 +89,7 @@ public class BookControllerIntegrationTest {
 			)
 			.andExpect(status().isOk())
 			.andExpect(model().attribute("book", newBook))
-			.andExpect(view().name("book-edit"));
+			.andExpect(view().name(VIEWS_BOOK_EDIT_FORM));
 	}
 	
 	@Test
@@ -90,7 +97,7 @@ public class BookControllerIntegrationTest {
 		this.mockMvc.perform(get("/book/edit"))
 		.andExpect(status().isOk())
 		.andExpect(model().attribute("book", new Book()))
-    	.andExpect(view().name("book-edit"));
+    	.andExpect(view().name(VIEWS_BOOK_EDIT_FORM));
 	}
 	
 	@Test
@@ -100,9 +107,9 @@ public class BookControllerIntegrationTest {
 				post("/book/edit")
 					.param("id", String.valueOf(TEST_BOOK_ID))
 					.param("name", TEST_BOOK_NAME)
-					.param("authorList", "1")
-					.param("category", "1")
-					.param("publicationDate", "20/02/2019")
+					.param("authorList", author.getId().toString())
+					.param("category", category.getId().toString())
+					.param("publicationDate", TEST_PUBLICATION_DATE_STR)
 					.sessionAttr("book", new Book())
 				)
 			.andExpect(status().isFound())
@@ -110,18 +117,20 @@ public class BookControllerIntegrationTest {
 	}
 	
 	@Test
-	public void testBookSaveWithNoName() throws Exception {	
+	public void testBookSaveWithErrors() throws Exception {	
 		this.mockMvc
 			.perform(
 				post("/book/edit")
 					.param("id", String.valueOf(TEST_BOOK_ID))
-					.param("authorList", "1")
-					.param("category", "1")
-					.param("publicationDate", "20/02/2019")
 					.sessionAttr("book", new Book())
 				)
+			.andExpect(model().attributeHasErrors("book"))
+			.andExpect(model().attributeHasFieldErrors("book", "name"))
+			.andExpect(model().attributeHasFieldErrors("book", "category"))
+			.andExpect(model().attributeHasFieldErrors("book", "authorList"))
+			.andExpect(model().attributeHasFieldErrors("book", "publicationDate"))
 			.andExpect(status().isOk())
-			.andExpect(view().name("book-edit"));
+			.andExpect(view().name(VIEWS_BOOK_EDIT_FORM));
 	}
 	
 	@Test
@@ -132,13 +141,13 @@ public class BookControllerIntegrationTest {
 					.param("id", String.valueOf(TEST_BOOK_ID))
 					.param("name", TEST_BOOK_NAME)
 					.param("authorList", "1")
-					.param("publicationDate", "20/02/2019")
+					.param("publicationDate", TEST_PUBLICATION_DATE_STR)
 					.sessionAttr("book", new Book())
 				)
 			.andExpect(model().attributeHasErrors("book"))
 			.andExpect(model().attributeHasFieldErrors("book", "category"))
 			.andExpect(status().isOk())
-			.andExpect(view().name("book-edit"));
+			.andExpect(view().name(VIEWS_BOOK_EDIT_FORM));
 	}
 	
 	@Test
