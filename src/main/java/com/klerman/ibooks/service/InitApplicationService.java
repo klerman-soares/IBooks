@@ -20,7 +20,7 @@ import com.klerman.ibooks.data.entity.Book;
 import com.klerman.ibooks.data.entity.Category;
 
 @Service
-@Profile(value = {"dev"})
+@Profile(value = {"mysql"})
 public class InitApplicationService {
 	
 	 private static final Logger LOGGER = LoggerFactory.getLogger(InitApplicationService.class);
@@ -102,13 +102,13 @@ public class InitApplicationService {
 		 
 		 String user = "user";
 		 String admin = "admin";
-		 String book_admin = "book";
+		 String bookAdmin = "book";
 		 userService.save(new User(user, passwordEncoder.encode("1234")));
 		 userService.save(new User(admin, passwordEncoder.encode("1234")));
-		 userService.save(new User(book_admin, passwordEncoder.encode("1234")));
+		 userService.save(new User(bookAdmin, passwordEncoder.encode("1234")));
 
 		 authGroupRepository.save(new AuthGroup(user, "USER"));
-		 authGroupRepository.save(new AuthGroup(book_admin, "ADMIN_BOOK"));
+		 authGroupRepository.save(new AuthGroup(bookAdmin, "ADMIN_BOOK"));
 		 authGroupRepository.save(new AuthGroup(admin, "ADMIN"));
 		 authGroupRepository.save(new AuthGroup(admin, "ADMIN_BOOK"));
 

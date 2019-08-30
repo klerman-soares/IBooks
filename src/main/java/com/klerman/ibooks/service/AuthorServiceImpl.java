@@ -1,6 +1,7 @@
 package com.klerman.ibooks.service;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class AuthorServiceImpl implements AuthorService {
 	private AuthorRepository authorRepository;
 
 	@Override
-	public Page<Author> findAll(Pageable pageable) {		
+	public Page<Author> findAll(Pageable pageable) {
 		return authorRepository.findAll(pageable);
 	}
 	

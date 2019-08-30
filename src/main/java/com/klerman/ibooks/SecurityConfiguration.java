@@ -20,8 +20,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@Profile(value = {"dev", "prod"})
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
+@Profile(value = {"mysql", "prod"})
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
     private UserDetailsService userDetailsService;
@@ -32,7 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	}
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider(){
+    public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
@@ -46,7 +46,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     }
     
     @Bean
-    public GrantedAuthoritiesMapper authoritiesMapper(){
+    public GrantedAuthoritiesMapper authoritiesMapper() {
         SimpleAuthorityMapper authorityMapper = new SimpleAuthorityMapper();
         authorityMapper.setConvertToUpperCase(true);
         authorityMapper.setDefaultAuthority("USER");

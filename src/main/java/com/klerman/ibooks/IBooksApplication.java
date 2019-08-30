@@ -13,29 +13,29 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 @SpringBootApplication
-@PropertySource(value={"classpath:messages.properties"})
+@PropertySource(value = { "classpath:messages.properties" })
 public class IBooksApplication implements WebMvcConfigurer {
 
-	public static void main(String[] args) {
-		SpringApplication.run(IBooksApplication.class, args);
-	}
-	
+    public static void main(String[] args) {
+        SpringApplication.run(IBooksApplication.class, args);
+    }
+
 	@Bean
 	public LocaleResolver localeResolver() {
-	    SessionLocaleResolver slr = new SessionLocaleResolver();
-	    slr.setDefaultLocale(Locale.US);
-	    return slr;
+		SessionLocaleResolver slr = new SessionLocaleResolver();
+		slr.setDefaultLocale(Locale.US);
+		return slr;
 	}
-	
+
 	@Bean
 	public LocaleChangeInterceptor localeChangeInterceptor() {
-	    LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
-	    lci.setParamName("lang");
-	    return lci;
+		LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+		lci.setParamName("lang");
+		return lci;
 	}
-	
+
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-	    registry.addInterceptor(localeChangeInterceptor());
+		registry.addInterceptor(localeChangeInterceptor());
 	}
 }

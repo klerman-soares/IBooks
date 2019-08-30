@@ -8,14 +8,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="AUTH_USER_GROUP")
+@Table(name = "AUTH_USER_GROUP")
 public class AuthGroup {
     @Id
-    @Column(name="AUTH_USER_GROUP_ID")
+    @Column(name = "AUTH_USER_GROUP_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     
-    @Column(name="USERNAME")
+    @Column(name = "USERNAME")
     private String username;
     
     public AuthGroup() { }
@@ -26,7 +26,7 @@ public class AuthGroup {
 		this.authGroup = authGroup;
 	}
 
-	@Column(name="AUTH_GROUP")
+	@Column(name ="AUTH_GROUP")
     private String authGroup;
 
     public long getId() {

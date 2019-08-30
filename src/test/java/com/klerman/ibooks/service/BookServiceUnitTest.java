@@ -59,10 +59,10 @@ public class BookServiceUnitTest {
 	
 	@Test
 	public void testSaveBook() {
-		Book aMockBook = new Book();
-		aMockBook.setName(BOOK_NAME);
+		Book mockBook = new Book();
+		mockBook.setName(BOOK_NAME);
 		
-		when(bookRepository.save(any(Book.class))).thenReturn(aMockBook);
+		when(bookRepository.save(any(Book.class))).thenReturn(mockBook);
 		
 		// Save the book
 		Book newBook = bookService.save(new Book());

@@ -1,5 +1,13 @@
 package com.klerman.ibooks.controller;
 
+import com.klerman.ibooks.data.entity.Author;
+import com.klerman.ibooks.data.entity.Book;
+import com.klerman.ibooks.data.entity.Category;
+import com.klerman.ibooks.service.AuthorService;
+import com.klerman.ibooks.service.BookService;
+import com.klerman.ibooks.service.CategoryService;
+import com.klerman.ibooks.util.PageWrapper;
+
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorSupport;
 import java.time.LocalDate;
@@ -29,14 +37,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.klerman.ibooks.data.entity.Author;
-import com.klerman.ibooks.data.entity.Book;
-import com.klerman.ibooks.data.entity.Category;
-import com.klerman.ibooks.service.AuthorService;
-import com.klerman.ibooks.service.BookService;
-import com.klerman.ibooks.service.CategoryService;
-import com.klerman.ibooks.util.PageWrapper;
 
 @Controller
 @RequestMapping (value="book")
@@ -121,7 +121,7 @@ public class BookController {
 		redirectAttributes.addFlashAttribute("msgOperationResult", msgDeleteSuccess);
 		return REDIRECT_VIEW_LIST;
 	}
-	
+
 	@InitBinder
 	public void initBinder_New(WebDataBinder webDataBinder) {
 		logger.info("initBinder_New() method: Registering CustomDateEditor");
@@ -132,6 +132,7 @@ public class BookController {
 	            if (!text.trim().isEmpty())
 	                super.setValue(LocalDate.parse(text.trim(), DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 	        }
+	        
 	        @Override
 	        public String getAsText() {
 	            if (super.getValue() == null)
@@ -145,7 +146,7 @@ public class BookController {
 	}
 	
 	@InitBinder(value = "book")
-	public void initBinder_Edit(WebDataBinder webDataBinder) {
+	public void initBinderEdit(WebDataBinder webDataBinder) {
 		webDataBinder.setDisallowedFields("id");
 	}
 

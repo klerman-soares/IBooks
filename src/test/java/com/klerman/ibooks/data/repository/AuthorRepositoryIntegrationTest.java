@@ -24,15 +24,15 @@ import com.klerman.ibooks.data.entity.Author;
 @AutoConfigureTestDatabase(replace=Replace.NONE)
 public class AuthorRepositoryIntegrationTest {
 	
+	private static final String AUTHOR_NAME = "Author Name";
+	private static final String AUTHOR_NEW_NAME = "Author New Name";
+	
 	@Autowired
     private TestEntityManager entityManager;
-	
+
 	@Autowired
 	private AuthorRepository auhtorRepository;
-	
-	String AUTHOR_NAME = "Author Name";
-	String AUTHOR_NEW_NAME = "Author New Name";
-	
+
 	@Before
 	public void setup() throws Exception {
 		// setup data scenario

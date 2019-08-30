@@ -24,15 +24,14 @@ import com.klerman.ibooks.data.entity.Category;
 @AutoConfigureTestDatabase(replace=Replace.NONE)
 public class CategoryRepositoryIntegrationTest {
 	
+	private static final String CATEGORY_NAME = "Category Name";
+	private static final String CATEGORY_NEW_NAME = "Category New Name";
 
 	@Autowired
     private TestEntityManager entityManager;
 	
 	@Autowired
-	private CategoryRepository categoryRepository;
-	
-	String CATEGORY_NAME = "Category Name";
-	String CATEGORY_NEW_NAME = "Category New Name";
+	private CategoryRepository categoryRepository;	
 	
 	@Before
 	public void setup() throws Exception {

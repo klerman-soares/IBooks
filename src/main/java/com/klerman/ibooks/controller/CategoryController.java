@@ -1,5 +1,9 @@
 package com.klerman.ibooks.controller;
 
+import com.klerman.ibooks.data.entity.Category;
+import com.klerman.ibooks.service.CategoryService;
+import com.klerman.ibooks.util.PageWrapper;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,19 +20,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.klerman.ibooks.data.entity.Category;
-import com.klerman.ibooks.service.CategoryService;
-import com.klerman.ibooks.util.PageWrapper;
-
 @Controller
 @RequestMapping("/category")
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 public class CategoryController {
-	
-	public static final String VIEW_EDIT_FORM = "category-edit";
-	public static final String VIEW_LIST = "category-list";
-	public static final String REDIRECT_VIEW_LIST = "redirect:/category/list";
-	public static final String VIEW_ERROR = "error";
+
+    public static final String VIEW_EDIT_FORM = "category-edit";
+    public static final String VIEW_LIST = "category-list";
+    public static final String REDIRECT_VIEW_LIST = "redirect:/category/list";
+    public static final String VIEW_ERROR = "error";
 	
 	@Value("${msg.category.save.success}") 
 	String msgSaveSuccess;
@@ -42,7 +42,7 @@ public class CategoryController {
 	@RequestMapping (value= {"/","/list"})	
 	public String categoryList (
 			Model model, 
-			@PageableDefault(
+			@PageableDefault (
 					size=PageWrapper.MAX_PAGE_ITEM_DISPLAY,
 					sort={"id"}, 
 					direction=Direction.DESC) Pageable pageable
@@ -87,7 +87,7 @@ public class CategoryController {
 		redirectAttributes.addFlashAttribute("msgOperationResult", msgDeleteSuccess);
 		return REDIRECT_VIEW_LIST;
 	}
-	
+
 	public String handleErrors() {
 		return VIEW_ERROR;
 	}
