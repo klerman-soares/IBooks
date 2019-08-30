@@ -23,5 +23,3 @@ There are three roles defined: user, admin, admin, book:
 * Admin can manage categories, books, and authors.
 * Admin_book can manage only books. 
 * User can access features outside the administration area (not implemented yet).
-
-I'm editing this file so I can create a pull request
