@@ -2,7 +2,7 @@
 
 Hello everybody!
 
-Changes in release 2
+Changes in release 3
 
 This is a bookstore web sample application using Spring Boot, Spring Secure, Spring Data, Thymeleaf, H2 Database 
 and Bootstrap.
